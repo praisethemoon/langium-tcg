@@ -1,5 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
-import type { CardDslAstType, MonsterCard } from './generated/ast.js';
+import type { BaseCard, CardDslAstType, MonsterCard } from './generated/ast.js';
 import type { CardDslServices } from './card-dsl-module.js';
 
 /**
@@ -14,6 +14,9 @@ export function registerValidationChecks(services: CardDslServices) {
             validator.checkMonsterTrait, 
             validator.checkMonsterAttack, 
             validator.checkMonsterHealth
+        ],
+        BaseCard: [
+            validator.checkBaseCardLimit
         ]
     };
     registry.register(checks, validator);
@@ -57,6 +60,12 @@ export class CardDslValidator {
 
         if (card.health > 10000) {
             accept('error', 'Monster too tanky. Heard about game balance?', { node: card, property: 'health' });
+        }
+    }
+
+    checkBaseCardLimit(card: BaseCard, accept: ValidationAcceptor): void {
+        if ((card.limit != undefined) && card.limit <= 0) {
+            accept('error', 'Card limit must be either omitted or greater than 0.', { node: card, property: 'limit' });
         }
     }
 }

@@ -10,6 +10,7 @@ interface BaseCard {
     type: string;
     category: string;
     artwork: string;
+    limit?: number;
 }
 
 // Main card types
@@ -27,7 +28,8 @@ CommonHeader:
     'id' ':' id=INT
     'type' ':' type=CardType
     'category' ':' category=ElementCategory
-    'artwork' ':' artwork=STRING;
+    'artwork' ':' artwork=STRING
+    ('limit' ':' limit=INT)?;
 
 // Card type definition
 CardType returns string:

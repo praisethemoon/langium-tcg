@@ -3,6 +3,7 @@ id: 2
 type: monster
 category: dark
 artwork: "https://manacards.s3.fr-par.scw.cloud/cards/skeleton_1.webp"
+//limit: 3
 traits: undead, warrior
 attack: 500
 hp: 1000
