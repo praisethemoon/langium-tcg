@@ -86,7 +86,7 @@ EffectStep:
 
 // Variable definition (starts with $), and might contain 
 // a predefined size or size limit
-VariableDecl <allowArray>: '$' name=ID (<allowArray>('[' size=ArraySize ']'))?;
+VariableDecl<allowArray>: '$' name=ID (<allowArray>('[' size=ArraySize ']'))?;
 
 /**
  * Despite $card[0] being an expression, for simplicity, we
