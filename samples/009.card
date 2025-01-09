@@ -1,0 +1,17 @@
+name: "Moon Witch" 
+id: 9
+type: monster
+category: dark
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/moon_witch.webp"
+//limit: 3
+traits: spellcaster
+attack: 1100
+hp: 1500
+stars: 4
+description: "A master of the dark arts."
+abilities:
+    [active] "Raise Skeleton":
+        description: "Sacrifice 500 life to summon a skeleton"
+        [effect] loose life equal to 500
+        select $card from the battlefield where ($card.id = 2)
+        [effect] summon $card

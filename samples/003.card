@@ -1,0 +1,11 @@
+name: "Not a Chicken" 
+id: 3
+type: monster
+category: wind
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/not_a_chicken.webp"
+//limit: 3
+traits: beast
+attack: 1000
+hp: 600
+stars: 3
+description: "Definitely not a chicken."

@@ -1,0 +1,11 @@
+name: "Elderwood Beasts" 
+id: 8
+type: monster
+category: earth
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/elderwood_beasts.webp"
+//limit: 3
+traits: beast
+attack: 1300
+hp: 1500
+stars: 4
+description: "Guardian of the forbidden woods."

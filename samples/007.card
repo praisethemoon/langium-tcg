@@ -1,0 +1,11 @@
+name: "Silver Knight" 
+id: 7
+type: monster
+category: wind
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/silver_knight.webp"
+//limit: 3
+traits: warrior
+attack: 1200
+hp: 1500
+stars: 4
+description: "Withstood the test of many battles."

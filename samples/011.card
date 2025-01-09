@@ -1,0 +1,11 @@
+name: "Construct #401" 
+id: 11
+type: monster
+category: earth
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/construct_401.webp"
+//limit: 3
+traits: construct
+attack: 1400
+hp: 3000
+stars: 5
+description: "???"

@@ -5,5 +5,5 @@ category: dark
 artwork: "https://manacards.s3.fr-par.scw.cloud/cards/cursed_pot.webp"
 description: "Draw 3 cards, then discard 4 cards."
 spell:
-    - [effect] draw 3 cards
-    - [effect] discard 4 cards
+    [effect] draw 3 cards
+    [effect] discard 4 cards

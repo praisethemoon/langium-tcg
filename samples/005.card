@@ -1,0 +1,11 @@
+name: "3 steps ahead" 
+id: 5
+type: trap
+category: dark
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/3_steps_ahead.webp"
+description: "When an opponent's monster is summoned, destroy it, opponent looses life equal to its attack then draw 1 card."
+trigger: trigger on opponent summon $m1
+effect:
+    [effect] destroy $m1
+    [effect] opponent loose life equal to $m1.attack
+    [effect] draw 1 cards

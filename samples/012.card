@@ -1,0 +1,11 @@
+name: "Divine Beast" 
+id: 12
+type: monster
+category: light
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/divine_beast.webp"
+//limit: 3
+traits: beast, divine
+attack: 2000
+hp: 2000
+stars: 5
+description: "A beast that once was a human's best friend."

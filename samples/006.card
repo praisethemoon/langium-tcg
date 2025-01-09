@@ -1,0 +1,21 @@
+name: "Bodhisattva" 
+id: 6
+type: monster
+category: light
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/bodhisattva.webp"
+limit: 1
+traits: divine, spellcaster
+attack: 0
+hp: 5000
+stars: 10
+description: "`I walk the path with you, so none shall falter alone`"
+abilities:
+    [active] "Compassion":
+        description: "Heals all monsters on the field for 1000 life"
+        auto select $allCards from the battlefield
+        [effect] increase hp of $allCards by 1000
+
+    // This card cannot attack.
+    [passive, trigger on attack $m1 attacking $m2] "Peace": // TODO: Fix this
+        description: "Bodhisattva disobeys your attack commands"
+        [effect] cancel attack

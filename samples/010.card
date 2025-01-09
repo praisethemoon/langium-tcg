@@ -1,0 +1,9 @@
+name: "Bear Trap" 
+id: 10
+type: trap
+category: earth
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/bear_trap.webp"
+description: "When an opponent's monster is summoned, destroy it, opponent looses life equal to its attack then draw 1 card."
+trigger: trigger on opponent activate spell 
+effect:
+    [effect] cancel effect
