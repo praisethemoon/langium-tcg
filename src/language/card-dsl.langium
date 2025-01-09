@@ -40,7 +40,7 @@ ElementCategory returns string:
     'dark' | 'light' | 'fire' | 'water' | 'earth' | 'wind';
 
 MonsterTrait returns string:
-    'spellcaster' | 'beast' | 'construct' | 'demon' | 'divine' | 'dragon' | 'spectral' | 'spellcaster' | 'spirit' | 'undead' | 'warrior';
+    'spellcaster' | 'beast' | 'construct' | 'demon' | 'divine' | 'dragon' | 'spectral' | 'spirit' | 'undead' | 'warrior';
 
 // Monster card specific fields
 MonsterCard:
@@ -143,10 +143,10 @@ TriggerEvent:
 Expr: OrExpr;
 
 OrExpr infers Expr:
-    AndExpr ({infer BinExpr.left=current} op='OR' right=AndExpr)*;
+    AndExpr ({infer BinExpr.left=current} op='or' right=AndExpr)*;
 
 AndExpr infers Expr:
-    CompExpr ({infer BinExpr.left=current} op='AND' right=CompExpr)*;
+    CompExpr ({infer BinExpr.left=current} op='and' right=CompExpr)*;
 
 CompExpr infers Expr:
     AddExpr ({infer BinExpr.left=current} op=('=' | '!=' | '<' | '>' | '<=' | '>=') right=AddExpr)*;
@@ -155,16 +155,15 @@ AddExpr infers Expr:
     MultExpr ({infer BinExpr.left=current} op=('+'|'-') right=MultExpr)*;
 
 MultExpr infers Expr:
-    PrimExpr ({infer BinExpr.left=current} op=('*'|'/') right=PrimExpr)* |
-    PrimExpr;
+    PrimExpr ({infer BinExpr.left=current} op=('*'|'/') right=PrimExpr)*;
 
 PrimExpr infers Expr:
-    INT | 
-    ElementCategory |
-    CardType |
-    MonsterTrait |
-    Variable | 
-    "this" |
+    INT ({infer IntConstant.value=current}) | 
+    ElementCategory ({infer ElementCategoryConstant.value=current}) |
+    CardType ({infer CardTypeConstant.value=current}) |
+    MonsterTrait ({infer MonsterTraitConstant.value=current}) |
+    Variable ({infer Variable.value=current}) | 
+    "this" ({infer ThisConstant.value=current}) |
     '(' Expr ')';
 
 // Conditions for where clauses

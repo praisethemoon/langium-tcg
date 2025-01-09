@@ -1,6 +1,8 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
 import type { BaseCard, CardDslAstType, MonsterCard } from './generated/ast.js';
 import type { CardDslServices } from './card-dsl-module.js';
+import { checkExpression } from './utils/typecheck-utils.js';
+
 
 /**
  * Register custom validation checks.
@@ -13,7 +15,8 @@ export function registerValidationChecks(services: CardDslServices) {
             validator.checkMonsterStars, 
             validator.checkMonsterTrait, 
             validator.checkMonsterAttack, 
-            validator.checkMonsterHealth
+            validator.checkMonsterHealth,
+            validator.checkSelectionTypeConsistency
         ],
         BaseCard: [
             validator.checkBaseCardLimit
@@ -68,4 +71,24 @@ export class CardDslValidator {
             accept('error', 'Card limit must be either omitted or greater than 0.', { node: card, property: 'limit' });
         }
     }
+
+    /**
+     * Makes sure that the LHS of an expression matches the RHS
+     * such as: 
+     *   card.type == monster -> valid
+     *   card.traits > 1      -> invalid
+     */
+    checkSelectionTypeConsistency(card: MonsterCard, accept: ValidationAcceptor): void {
+        for(const ability of card.abilities) {
+            for(const step of ability.steps) {
+                if(step.$type === 'SelectStep') {
+                    if(step.condition) {
+                        checkExpression(step.condition, accept);
+                    }
+                }
+            }
+        }
+    }
+
+
 }
