@@ -64,7 +64,7 @@ TrapCard:
 
 // Ability definition
 Ability:
-    '-' '[' AbilityType ']' name=STRING ':' INDENT AbilityBlock<true> DEDENT;
+    '[' AbilityType ']' name=STRING ':' INDENT AbilityBlock<true> DEDENT;
 
 fragment AbilityType:
     type='active' | (type='passive' ',' trigger=TriggerCondition);
@@ -74,15 +74,15 @@ fragment AbilityBlock<allowDescription>:
     (<allowDescription>AbilityDescription)? steps+=AbilityStep+;
 
 fragment AbilityDescription:
-    '-' 'description' ':' description=STRING;
+    'description' ':' description=STRING;
 
 // Individual ability steps
 AbilityStep:
-    '-' (SelectStep | EffectStep);
+    (SelectStep | EffectStep);
 
 // Select statement
 SelectStep:
-    (auto?='auto')? 'select' variable=VariableDecl<true> 'from' source=SelectSource ('where' '(' condition=Condition ')')?;
+    (auto?='auto')? 'select' variable=VariableDecl<true> 'from' source=SelectSource ('where' condition=Condition)?;
 
 // Effect statement
 EffectStep:
@@ -112,8 +112,8 @@ Effect:
     action='change' 'target' target=Variable 'to' newTarget=Variable |
 
     // Monster effects
-    action='increase' stat=('attack' | 'hp') target=Variable 'by' amount=Expr |
-    action='weaken' stat=('attack' | 'hp') target=Variable 'by' amount=Expr |
+    action='increase' stat=('attack' | 'hp') 'of' target=Variable 'by' amount=Expr |
+    action='weaken' stat=('attack' | 'hp') 'of' target=Variable 'by' amount=Expr |
     action='summon' target=Variable |
     action='destroy' target=Variable |
     

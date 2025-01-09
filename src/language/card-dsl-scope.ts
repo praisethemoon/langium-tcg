@@ -1,5 +1,5 @@
 import { AstNode, DefaultScopeProvider, LangiumCoreServices, ReferenceInfo, Scope } from "langium";
-import { Ability,  isAbility, isSelectStep, SelectStep, VariableDecl, isTrapCard, TrapCard } from "./generated/ast.js";
+import { Ability,  isAbility, isSelectStep, SelectStep, VariableDecl, isTrapCard, TrapCard, isSpellCard, SpellCard } from "./generated/ast.js";
 
 export class CardDslScopeProvider extends DefaultScopeProvider {
     constructor(services: LangiumCoreServices) {
@@ -39,6 +39,12 @@ export class CardDslScopeProvider extends DefaultScopeProvider {
             return this.createScopeForNodes(declarations);
         }
 
+        const spellCard = this.findContainingSpellCard(context.container);
+        if(spellCard) {
+            // Get all variables declared in this ability
+            const declarations = this.getAllVariableDeclarationsInSpellCard(spellCard);
+            return this.createScopeForNodes(declarations);
+        }
         return super.getScope(context);
     }
 
@@ -102,6 +108,26 @@ export class CardDslScopeProvider extends DefaultScopeProvider {
         }
         if(trapCard.trigger.event.attacked) {
             declarations.push(trapCard.trigger.event.attacked);
+        }
+        return declarations;
+    }
+
+    private findContainingSpellCard(node: AstNode | undefined): SpellCard | undefined {
+        while (node) {
+            if (isSpellCard(node)) {
+                return node;
+            }
+            node = node.$container;
+        }
+        return undefined;
+    }
+
+    private getAllVariableDeclarationsInSpellCard(spellCard: SpellCard): VariableDecl[] {
+        const declarations: VariableDecl[] = [];
+        for (const step of spellCard.steps) {
+            if (isSelectStep(step)) {
+                declarations.push(step.variable);
+            }
         }
         return declarations;
     }
