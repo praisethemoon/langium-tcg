@@ -1,0 +1,10 @@
+name: "Jokes on you!" 
+id: 1
+type: trap
+category: dark
+artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
+trigger: trigger on opponent attack $target attacking $target2 where ($target.attack >= $target2.hp)
+effect: 
+    - description: "When attacking with a killing blow, cancel the attack and deal damage equal to the attacker's attack to the opponent."
+    - [effect] cancel attack
+    - [effect] 

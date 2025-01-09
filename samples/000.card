@@ -1,0 +1,15 @@
+name: "The King in the Mist" 
+id: 1
+type: monster
+category: dark
+artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
+traits: spellcaster
+attack: 1000
+health: 1000
+stars: 7
+description: "A powerful creature, really."
+abilities:
+    - [active] "Rally":
+        - description: "Select a 'Dark' monster from your hand and summon it to your side of the field"
+        - select $target from opponents hand where ($target.type = monster)
+        - [effect] summon $target

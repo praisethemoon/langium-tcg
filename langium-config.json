@@ -1,0 +1,16 @@
+{
+    "projectName": "CardDsl",
+    "languages": [{
+        "id": "card-dsl",
+        "grammar": "src/language/card-dsl.langium",
+        "caseInsensitive": true,
+        "fileExtensions": [".card"],
+        "textMate": {
+            "out": "syntaxes/card-dsl.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "src/syntaxes/card-dsl.monarch.ts"
+        }
+    }],
+    "out": "src/language/generated"
+}

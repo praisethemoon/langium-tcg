@@ -1,0 +1,9 @@
+name: "I don't think so!" 
+id: 1
+type: trap
+category: dark
+artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
+trigger: trigger on opponent summon $target where (($target.type = monster) and ($target.attack >= 500))
+effect: 
+    - description: "When the opponent summons a monster with 500 or more attack, destroy it."
+    - [effect] destroy $target
