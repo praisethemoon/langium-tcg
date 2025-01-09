@@ -52,3 +52,24 @@ effect:
     - [effect] destroy $card
 ```
 
+## Notes
+
+The assumption is that the game will handle deeper type checking, for instance
+
+```
+- select $cards[=3] from the battlefield where ($cards.type = monster)
+```
+
+Will select 3 cards, but during selection, `$target` is treated as a card object
+
+The following scenario is not yet implemented in validatio phase:
+
+```
+- select $firstCards[=2] from deck where ($firstCards.type = monster)
+- select $secondCards from deck where ($secondCards.attack <= $firstCards[0].attack)
+```
+
+The idea here is that during selection, any variable declared is a previous selection shoud theoretically be checked 
+since now it is used as a value and not a query object.
+
+
