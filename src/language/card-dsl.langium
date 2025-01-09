@@ -44,30 +44,32 @@ MonsterTrait returns string:
 MonsterCard:
     'traits' ':' traits+=MonsterTrait (',' traits+=MonsterTrait)*
     'attack' ':' attack=INT
-    'health' ':' health=INT
+    'hp' ':' health=INT
     'stars' ':' stars=INT
     'description' ':' description=STRING
-    'abilities' ':'  INDENT abilities+=Ability* DEDENT;
+    ('abilities' ':'  INDENT abilities+=Ability* DEDENT)?;
 
 // Spell card specific fields
 SpellCard:
-    'ability' ':' AbilityBlock;
+    'description' ':' description=STRING
+    'spell' ':' INDENT AbilityBlock<false> DEDENT;
 
 // Trap card specific fields
 TrapCard:
+    'description' ':' description=STRING
     'trigger' ':' trigger=TriggerCondition
-    'effect' ':' INDENT AbilityBlock DEDENT;
+    'effect' ':' INDENT AbilityBlock<false> DEDENT;
 
 // Ability definition
 Ability:
-    '-' '[' AbilityType ']' name=STRING ':' INDENT AbilityBlock DEDENT;
+    '-' '[' AbilityType ']' name=STRING ':' INDENT AbilityBlock<true> DEDENT;
 
 fragment AbilityType:
     type='active' | (type='passive' ',' trigger=TriggerCondition);
 
 // Ability block containing steps
-fragment AbilityBlock:
-    (AbilityDescription)? steps+=AbilityStep+;
+fragment AbilityBlock<allowDescription>:
+    (<allowDescription>AbilityDescription)? steps+=AbilityStep+;
 
 fragment AbilityDescription:
     '-' 'description' ':' description=STRING;
@@ -115,9 +117,10 @@ Effect:
     
     // Player effects
     action='heal' 'for' amount=Expr |
-    action='gain' 'life' 'equal' 'to' amount=Expr |
-    action='loose' 'life' 'equal' 'to' amount=Expr |
-    action=('draws' | 'discards') amount=INT 'cards';
+    
+    (isOpponent?=('opponent'))? action='gain' 'life' 'equal' 'to' amount=Expr |
+    (isOpponent?=('opponent'))? action='loose' 'life' 'equal' 'to' amount=Expr |
+    (isOpponent?=('opponent'))? action=('draw' | 'discard') amount=INT 'cards';
 
 
 // Trigger conditions
@@ -125,14 +128,14 @@ TriggerCondition:
     'trigger' 'on' event=TriggerEvent;
 
 TriggerEvent:
-    isOpponent=('opponent')? trigger='summon' target=VariableDecl<false> ('where' condition=Condition)? | 
-    isOpponent=('opponent')? trigger='death' target=VariableDecl<false> ('where' condition=Condition)? | 
-    isOpponent=('opponent')? trigger='attack' target=VariableDecl<false> 'attacking' attacked=VariableDecl<false> ('where' condition=Condition)? | 
-    isOpponent=('opponent')? trigger='damaged' target=VariableDecl<false> ('where' condition=Condition)? |
-    isOpponent=('opponent')? trigger='healed' target=VariableDecl<false> ('where' condition=Condition)? |
-    isOpponent=('opponent')? trigger='draw' |
-    isOpponent=('opponent')? trigger='discard' |
-    isOpponent=('opponent')? trigger='activate' activatedEntity=("trap"|"spell"|"ability") ('where' condition=Condition)?;
+    (isOpponent=('opponent'))? trigger='summon' target=VariableDecl<false> ('where' condition=Condition)? | 
+    (isOpponent=('opponent'))? trigger='death' target=VariableDecl<false> ('where' condition=Condition)? | 
+    (isOpponent=('opponent'))? trigger='attack' target=VariableDecl<false> 'attacking' attacked=VariableDecl<false> ('where' condition=Condition)? | 
+    (isOpponent=('opponent'))? trigger='damaged' target=VariableDecl<false> ('where' condition=Condition)? |
+    (isOpponent=('opponent'))? trigger='healed' target=VariableDecl<false> ('where' condition=Condition)? |
+    (isOpponent=('opponent'))? trigger='draw' |
+    (isOpponent=('opponent'))? trigger='discard' |
+    (isOpponent=('opponent'))? trigger='activate' activatedEntity=("trap"|"spell"|"ability") ('where' condition=Condition)?;
 
 // Expression hierarchy
 Expr: OrExpr;
@@ -159,6 +162,7 @@ PrimExpr infers Expr:
     CardType |
     MonsterTrait |
     Variable | 
+    "this" |
     '(' Expr ')';
 
 // Conditions for where clauses

@@ -1,9 +1,9 @@
-name: "I don't think so!" 
+name: "Cursed Pot" 
 id: 1
-type: trap
+type: spell
 category: dark
-artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
-trigger: trigger on opponent summon $card where (($card.type = monster) and ($card.attack >= 500))
-effect: 
-    - description: "When the opponent summons a monster with 500 or more attack, destroy it."
-    - [effect] destroy $card
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/cursed_pot.webp"
+description: "Draw 3 cards, then discard 4 cards."
+spell:
+    - [effect] draw 3 cards
+    - [effect] discard 4 cards

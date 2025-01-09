@@ -1,15 +1,15 @@
-name: "The King in the Mist" 
+name: "Ifrit" 
 id: 1
 type: monster
-category: dark
-artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
+category: fire
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/ifrit.webp"
 traits: spellcaster
-attack: 1000
-health: 1000
-stars: 7
-description: "A powerful creature, really."
+attack: 3000
+hp: 1000
+stars: 10
+description: "Lord of fire and destruction"
 abilities:
-    - [active] "Rally":
-        - description: "Select a 'Dark' monster from your hand and summon it to your side of the field"
-        - select $card from opponents hand where ($card.type = monster)
-        - [effect] summon $card
+    - [active] "Annihilation":
+        - description: "Destroy all monsters on the field except for Ifrit"
+        - auto select $allCards from the battlefield where (($allCards.type = monster) and ($allCards != this))
+        - [effect] destroy $allCards

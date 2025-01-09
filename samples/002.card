@@ -1,9 +1,10 @@
-name: "Jokes on you!" 
-id: 1
-type: trap
+name: "Skeleton #1" 
+id: 2
+type: monster
 category: dark
-artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
-trigger: trigger on opponent attack $card attacking $target2 where ($card.attack >= $target2.hp)
-effect: 
-    - description: "When attacking with a killing blow, cancel the attack and deal damage equal to the attacker's attack to the opponent."
-    - [effect] cancel attack
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/skeleton_1.webp"
+traits: undead, warrior
+attack: 500
+hp: 1000
+stars: 2
+description: "An ordinary skeleton warrior."
