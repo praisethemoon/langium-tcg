@@ -1,22 +1,23 @@
 import type { Model } from '../language/generated/ast.js';
-import { expandToNode, joinToNode, toString } from 'langium/generate';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { extractDestinationAndName } from './cli-util.js';
+import { NodeFileSystem } from 'langium/node';
+import { createCardDslServices } from '../language/card-dsl-module.js';
 
-export function generateJavaScript(model: Model, filePath: string, destination: string | undefined): string {
+export function generateJSON(model: Model, filePath: string, destination: string | undefined): string {
     const data = extractDestinationAndName(filePath, destination);
-    const generatedFilePath = `${path.join(data.destination, data.name)}.js`;
+    const generatedFilePath = `${path.join(data.destination, data.name)}.json`;
 
-    const fileNode = expandToNode`
-        "use strict";
-
-        ${joinToNode(model.cards, card => `console.log('Hello, ${card.$type}!');`, { appendNewLineIfNotEmpty: true })}
-    `.appendNewLineIfNotEmpty();
+    const services = createCardDslServices(NodeFileSystem).CardDsl;
+    const json = services.serializer.JsonSerializer.serialize(model.cards[0], {
+        comments: true,
+        space: 4
+    });
 
     if (!fs.existsSync(data.destination)) {
         fs.mkdirSync(data.destination, { recursive: true });
     }
-    fs.writeFileSync(generatedFilePath, toString(fileNode));
-    return generatedFilePath;
+    fs.writeFileSync(generatedFilePath, json);
+    return json;
 }
