@@ -38,5 +38,17 @@ In this example, when the player activates the "Rally" ability, they will need t
 
 If the opponent has a trap, that has an activation condition of `on summon`, the player can activate the trap.
 
+An example of such a trap would be:
 
+```
+name: "I don't think so!" 
+id: 1
+type: trap
+category: dark
+artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
+trigger: trigger on opponent summon $card where (($card.type = monster) and ($card.attack >= 500))
+effect: 
+    - description: "When the opponent summons a monster with 500 or more attack, destroy it."
+    - [effect] destroy $card
+```
 
