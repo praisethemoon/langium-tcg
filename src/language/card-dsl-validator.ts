@@ -1,5 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
-import type { CardDslAstType, BaseCard } from './generated/ast.js';
+import type { CardDslAstType, MonsterCard } from './generated/ast.js';
 import type { CardDslServices } from './card-dsl-module.js';
 
 /**
@@ -9,7 +9,12 @@ export function registerValidationChecks(services: CardDslServices) {
     const registry = services.validation.ValidationRegistry;
     const validator = services.validation.CardDslValidator;
     const checks: ValidationChecks<CardDslAstType> = {
-        BaseCard: validator.checkPersonStartsWithCapital
+        MonsterCard: [
+            validator.checkMonsterStars, 
+            validator.checkMonsterTrait, 
+            validator.checkMonsterAttack, 
+            validator.checkMonsterHealth
+        ]
     };
     registry.register(checks, validator);
 }
@@ -19,13 +24,39 @@ export function registerValidationChecks(services: CardDslServices) {
  */
 export class CardDslValidator {
 
-    checkPersonStartsWithCapital(card: BaseCard, accept: ValidationAcceptor): void {
-        if (card.name) {
-            const firstChar = card.name.substring(0, 1);
-            if (firstChar.toUpperCase() !== firstChar) {
-                accept('warning', 'Card name should start with a capital.', { node: card, property: 'name' });
-            }
+    checkMonsterStars(card: MonsterCard, accept: ValidationAcceptor): void {
+        if (card.stars < 1 || card.stars > 10) {
+            accept('error', 'Monster stars must be between 1 and 10.', { node: card, property: 'stars' });
         }
     }
 
+    checkMonsterTrait(card: MonsterCard, accept: ValidationAcceptor): void {
+        if (card.traits.length === 0) {
+            accept('error', 'Monster must have at least one trait.', { node: card, property: 'traits' });
+        }
+
+        if (card.traits.length > 3) {
+            accept('error', 'Monster cannot have more than 3 traits.', { node: card, property: 'traits' });
+        }
+    }
+
+    checkMonsterAttack(card: MonsterCard, accept: ValidationAcceptor): void {
+        if (card.attack < 0) {
+            accept('error', 'Monster attack cannot be negative.', { node: card, property: 'attack' });
+        }
+
+        if (card.attack > 10000) {
+            accept('error', 'Monster too powerful. Heard about game balance?', { node: card, property: 'attack' });
+        }
+    }
+
+    checkMonsterHealth(card: MonsterCard, accept: ValidationAcceptor): void {
+        if (card.health <= 0) {
+            accept('error', 'Monster health must be greater than 0.', { node: card, property: 'health' });
+        }
+
+        if (card.health > 10000) {
+            accept('error', 'Monster too tanky. Heard about game balance?', { node: card, property: 'health' });
+        }
+    }
 }
