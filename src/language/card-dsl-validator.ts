@@ -1,5 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
-import type { BaseCard, CardDslAstType, MonsterCard } from './generated/ast.js';
+import type { BaseCard, CardDslAstType, MonsterCard, SpellCard, TrapCard } from './generated/ast.js';
 import type { CardDslServices } from './card-dsl-module.js';
 import { checkExpression } from './utils/typecheck-utils.js';
 
@@ -12,11 +12,18 @@ export function registerValidationChecks(services: CardDslServices) {
     const validator = services.validation.CardDslValidator;
     const checks: ValidationChecks<CardDslAstType> = {
         MonsterCard: [
+            validator.checkMonsterType,
             validator.checkMonsterStars, 
             validator.checkMonsterTrait, 
             validator.checkMonsterAttack, 
             validator.checkMonsterHealth,
             validator.checkSelectionTypeConsistency
+        ],
+        TrapCard: [
+            validator.checkTrapType,
+        ],
+        SpellCard: [
+            validator.checkSpellType,
         ],
         BaseCard: [
             validator.checkBaseCardLimit
@@ -29,6 +36,39 @@ export function registerValidationChecks(services: CardDslServices) {
  * Implementation of custom validations.
  */
 export class CardDslValidator {
+
+    /** 
+     * a card declared as a monster must have type = monster
+    */
+    checkMonsterType(card: MonsterCard, accept: ValidationAcceptor): void {
+        if(card.type !== 'monster') {
+            accept('error', 'Card must be declared as a monster.', { node: card, property: 'type' });
+        }
+    }
+
+    /**
+     * a card declared as a trap must have type = trap
+     */
+    checkTrapType(card: TrapCard, accept: ValidationAcceptor): void {
+        if(card.type !== 'trap') {
+            accept('error', 'Card must be declared as a trap.', { node: card, property: 'type' });
+        }
+    }
+
+    /**
+     * a card declared as a spell must have type = spell
+     */
+    checkSpellType(card: SpellCard, accept: ValidationAcceptor): void {
+        if(card.type !== 'spell') {
+            accept('error', 'Card must be declared as a spell.', { node: card, property: 'type' });
+        }
+    }
+
+    checkMonsterFields(card: MonsterCard, accept: ValidationAcceptor): void {
+        if(card.attack > card.health) {
+            accept('error', 'Monster attack cannot be greater than health.', { node: card, property: 'attack' });
+        }
+    }
 
     checkMonsterStars(card: MonsterCard, accept: ValidationAcceptor): void {
         if (card.stars < 1 || card.stars > 10) {
