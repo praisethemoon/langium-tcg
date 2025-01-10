@@ -1,0 +1,10 @@
+name: "Elden Ring" 
+id: 4
+type: trap
+category: light
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/3_steps_ahead.webp"
+description: "Target a beast, increase its attack by 500."
+trigger: trigger on death $m1 where $m1.type = dark
+effect:
+    select $m2 from your deck
+    [effect] summon $m2 to your side of the field
