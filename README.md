@@ -3,19 +3,24 @@
 This is a Langium DSL for describing cards for a TCG.
 
 The language is designed to be easy to use and understand, allowing for non programmers to easily add cards to the game.
+The goal is to model not only a Card's characteristics, but also its abilities and effects.
+
+<img src="./assets/ifrit-demo.png" width="300">
+
+The source of this card can be found in `/samples/000.card`
+
+
 Card abilities are modeled as `selection` and `effect` steps.
 
-A Selection step is a step which prompts to player to select a target within the game, where to target must satisfy a set of conditions.
-An Effect step is a step which instructs the game to perform an action.
+1. A Selection step is a step which prompts to player to select a target within the game, where to target must satisfy a set of conditions.
+2. An Effect step is a step which instructs the game to perform an action.
 
 Effect steps can be chained, meaning players can react to them.
 
 The DSL is modeled for a Yu Gi Oh like TCG, where players can have monster cards, spell cards, and trap cards.
-
 The language also models UI element such as Card description, artwork, and abilities' names and descriptions.
 
-## Example
-
+## Mechanics
 ```
 name: "The King in the Mist" 
 id: 1
@@ -75,3 +80,4 @@ since now it is used as a value and not a query object.
 
 ## TODO:
 - Add tests `/tests/*`
+- Game prototype
