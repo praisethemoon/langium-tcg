@@ -28,10 +28,10 @@ health: 1000
 stars: 7
 description: "A powerful creature, really."
 abilities:
-    - [active] "Rally":
-        - description: "Select a 'Dark' monster from your hand and summon it to your side of the field"
-        - select $target from opponents hand where ($target.type = monster)
-        - [effect] summon $target
+    [active] "Rally":
+        description: "Select a 'Dark' monster from your hand and summon it to your side of the field"
+        select $card from opponents hand where ($card.type = monster)
+        [effect] summon $card
 ```
 
 In this example, when the player activates the "Rally" ability, they will need to select a monster from their hand who's type is `dark` and then summon it to their side of the field.
@@ -48,8 +48,8 @@ category: dark
 artwork: "https://www.cardgameart.org/wp-content/uploads/2024/01/The-King-in-the-Mist.jpg"
 trigger: trigger on opponent summon $card where (($card.type = monster) and ($card.attack >= 500))
 effect: 
-    - description: "When the opponent summons a monster with 500 or more attack, destroy it."
-    - [effect] destroy $card
+    description: "When the opponent summons a monster with 500 or more attack, destroy it."
+    [effect] destroy $card
 ```
 
 ## Notes
@@ -57,7 +57,7 @@ effect:
 The assumption is that the game will handle deeper type checking, for instance
 
 ```
-- select $cards[=3] from the battlefield where ($cards.type = monster)
+select $cards[=3] from the battlefield where ($cards.type = monster)
 ```
 
 Will select 3 cards, but during selection, `$target` is treated as a card object
@@ -65,8 +65,8 @@ Will select 3 cards, but during selection, `$target` is treated as a card object
 The following scenario is not yet implemented in validatio phase:
 
 ```
-- select $firstCards[=2] from deck where ($firstCards.type = monster)
-- select $secondCards from deck where ($secondCards.attack <= $firstCards[0].attack)
+select $firstCards[=2] from deck where ($firstCards.type = monster)
+select $secondCards from deck where ($secondCards.attack <= $firstCards[0].attack)
 ```
 
 The idea here is that during selection, any variable declared is a previous selection shoud theoretically be checked 

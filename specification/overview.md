@@ -144,19 +144,20 @@ Select pools: These are the pools that can be selected from.
 |---|---|
 |the battlefield|Selects a card from the battlefield|
 |your side of the field|Selects a card from your side of the field|
-|enemy's field|Selects a card from enemy's field|
+|opponents field|Selects a card from enemy's field|
 |your hand|Selects a card from your hand|
-|enemy's hand|Selects a card from enemy's hand|
+|opponents hand|Selects a card from enemy's hand|
 |your deck|Selects a card from your deck|
-|enemy's deck|Selects a card from enemy's deck|
+|opponents deck|Selects a card from enemy's deck|
 |your graveyard|Selects a card from your graveyard|
-|enemy's graveyard|Selects a card from enemy's graveyard|
+|opponents graveyard|Selects a card from enemy's graveyard|
 |all graveyards|Selects a card from all graveyards|
 
 #### Effect language:
 - The effect language is a list of commands that the game engine will execute.
+
 | Name            | Description                                                  |
-|-----------------|--------------------------------------------------------------|
+|:---------------:|--------------------------------------------------------------|
 | Summon          | Summon a monster, there must be an empty slot in the field   |
 | Destroy         | Send to the graveyard                                        |
 | Heal for        | Heals the monster for the given amount of HP (does not reach beyond maximum life pool) |
