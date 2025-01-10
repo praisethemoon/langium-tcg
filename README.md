@@ -73,3 +73,5 @@ The idea here is that during selection, any variable declared is a previous sele
 since now it is used as a value and not a query object.
 
 
+## TODO:
+- Add tests `/tests/*`
