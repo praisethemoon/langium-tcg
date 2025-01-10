@@ -77,6 +77,12 @@ select $secondCards from deck where ($secondCards.attack <= $firstCards[0].attac
 The idea here is that during selection, any variable declared is a previous selection shoud theoretically be checked 
 since now it is used as a value and not a query object.
 
+## Testing
+There is no game prototype yet, but you can export `.card` to `.json` using langium's JSON Serializer.
+```
+node bin/cli.js samples/000.card -d ./samples/samples_serialized/
+```
+
 
 ## TODO:
 - Add tests `/tests/*`
