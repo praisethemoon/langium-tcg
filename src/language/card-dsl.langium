@@ -23,7 +23,7 @@ Card returns BaseCard:
     );
 
 // Common header for all cards
-CommonHeader:
+fragment CommonHeader:
     'name' ':' name=STRING
     'id' ':' id=INT
     'type' ':' type=CardType
