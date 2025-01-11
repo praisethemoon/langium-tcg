@@ -107,19 +107,17 @@ ArraySize:
 // Effect types
 Effect:
     // Effects related to attacking / other effects
-    action='cancel' 'effect' |
-    action='cancel' 'attack' |
+    action='cancel' cancel='effect' |
+    action='cancel' cancel='attack' |
     action='change' 'target' target=Variable 'to' newTarget=Variable |
 
     // Monster effects
     action='increase' stat=('attack' | 'hp') 'of' target=Variable 'by' amount=Expr |
-    action='weaken' stat=('attack' | 'hp') 'of' target=Variable 'by' amount=Expr |
+    action='decrease' stat=('attack' | 'hp') 'of' target=Variable 'by' amount=Expr |
     action='summon' target=Variable |
     action='destroy' target=Variable |
-    
+
     // Player effects
-    action='heal' 'for' amount=Expr |
-    
     (isOpponent?=('opponent'))? action='gain' 'life' 'equal' 'to' amount=Expr |
     (isOpponent?=('opponent'))? action='loose' 'life' 'equal' 'to' amount=Expr |
     (isOpponent?=('opponent'))? action=('draw' | 'discard') amount=INT 'cards';
