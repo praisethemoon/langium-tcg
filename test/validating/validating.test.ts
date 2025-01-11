@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, test } from "vitest";
 import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
-import type { Diagnostic } from "vscode-languageserver-types";
 import { createCardDslServices } from "../../src/language/card-dsl-module.js";
 import { Model, isModel } from "../../src/language/generated/ast.js";
 
