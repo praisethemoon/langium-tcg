@@ -1,5 +1,15 @@
 import { ValidationAcceptor } from "langium";
-import { Expr, Variable } from "../generated/ast.js";
+import { 
+    Expr, 
+    isBinExpr, 
+    isCardTypeConstant, 
+    isElementCategoryConstant, 
+    isIntConstant, 
+    isMonsterTraitConstant, 
+    isThisConstant, 
+    isVariableExpression, 
+    Variable
+} from "../generated/ast.js";
 
 
 type ExpressionType = 'trait' | 'card_type' | 'element_category' | 'number' | "card_obj" | "boolean" | undefined;
@@ -31,7 +41,7 @@ export function checkExpression(expression: Expr, accept: ValidationAcceptor): E
         return undefined;
     }
 
-    if(expression.$type === 'BinExpr') {
+    if(isBinExpr(expression)) {
         const lhsType = checkExpression(expression.left, accept);
         const rhsType = checkExpression(expression.right, accept);
 
@@ -64,27 +74,27 @@ export function checkExpression(expression: Expr, accept: ValidationAcceptor): E
         return "boolean"
     }
 
-    if(expression.$type === 'IntConstant') {
+    if(isIntConstant(expression)) {
         return 'number'
     }
 
-    if(expression.$type === 'CardTypeConstant') {
+    if(isCardTypeConstant(expression)) {
         return 'card_type'
     }
 
-    if(expression.$type === 'ElementCategoryConstant') {
+    if(isElementCategoryConstant(expression)) {
         return 'element_category'
     }
 
-    if(expression.$type === 'MonsterTraitConstant') {
+    if(isMonsterTraitConstant(expression)) {
         return 'trait'
     }
 
-    if(expression.$type === 'Variable') {
-        return getVariableType(expression.value as Variable)
+    if(isVariableExpression(expression)) {
+        return getVariableType(expression.value.rawValue)
     }
 
-    if(expression.$type === 'ThisConstant') {
+    if(isThisConstant(expression)) {
         return 'card_obj'
     }
 
