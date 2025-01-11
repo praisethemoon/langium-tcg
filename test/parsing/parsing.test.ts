@@ -3,7 +3,7 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import { createCardDslServices } from "../../src/language/card-dsl-module.js";
-import { BinExpr, ElementCategoryConstant, Model, MonsterCard, SelectStep, isEffectStep, isElementCategoryConstant, isSelectStep } from "../../src/language/generated/ast.js";
+import { BinExpr, ElementCategoryConstant, ElementCategoryConstantExpr, Model, MonsterCard, SelectStep, isEffectStep, isElementCategoryConstant, isElementCategoryConstantExpr, isSelectStep } from "../../src/language/generated/ast.js";
 
 let services: ReturnType<typeof createCardDslServices>;
 let parse:    ReturnType<typeof parseHelper<Model>>;
@@ -36,7 +36,6 @@ abilities:
         description: "Destroy all monsters on the field except for Ifrit"
         auto select $allCards from the battlefield where($allCards.category = fire)
         [effect] destroy $allCards
-
         `);
 
         // Check overall status
@@ -67,8 +66,10 @@ abilities:
         expect(monsterCard.abilities[0].steps.length).toBe(2);
 
 
-        expect(isSelectStep(monsterCard.abilities[0].steps[0])).toBe(true);
-        expect(isEffectStep(monsterCard.abilities[0].steps[1])).toBe(true);
+        expect(isSelectStep(monsterCard.abilities[0].steps[0])?"step 0 is a select step": "step 0 is not a select step")
+            .toBe("step 0 is a select step");
+        expect(isEffectStep(monsterCard.abilities[0].steps[1])?"step 1 is an effect step": "step 1 is not an effect step")
+            .toBe("step 1 is an effect step");
 
         const selectStep = monsterCard.abilities[0].steps[0] as SelectStep;
         //expect(isBinExpr(selectStep.condition)).toBe(true);
@@ -76,9 +77,10 @@ abilities:
         const binExpr = selectStep.condition as BinExpr;
 
         const rhs = binExpr.right;
-        expect(isElementCategoryConstant(rhs)).toBe(true);
+        expect(isElementCategoryConstant(rhs)?"rhs is an element category constant expression": "rhs is not an element category constant expression")
+            .toBe("rhs is an element category constant expression");
 
         const categoryConstant = rhs as ElementCategoryConstant;
-        expect(categoryConstant.value).toBe('fire');
+        expect(categoryConstant.value.rawValue).toBe('fire');
     });
 });
