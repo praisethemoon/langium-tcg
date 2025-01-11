@@ -25,8 +25,21 @@ describe('Linking tests', () => {
 
     test('linking of greetings', async () => {
         document = await parse(`
-            person Langium
-            Hello Langium!
+name: "Ifrit" 
+id: 1
+type: monster
+category: fire
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/ifrit.webp"
+traits: spellcaster
+attack: 3000
+hp: 1000
+stars: 10
+description: "Lord of fire and destruction"
+abilities:
+    [active] "Annihilation":
+        description: "Destroy all monsters on the field except for Ifrit"
+        auto select $allCards from the battlefield where (($allCards.category = fire) and ($allCards.attack < $allCards.hp))
+        [effect] destroy $allCards
         `);
 
         expect(
@@ -35,9 +48,9 @@ describe('Linking tests', () => {
             // and then evaluate the cross references we're interested in by checking
             //  the referenced AST element as well as for a potential error message;
             checkDocumentValid(document)
-                || document.parseResult.value.greetings.map(g => g.person.ref?.name || g.person.error?.message).join('\n')
+                || document.parseResult.value.cards.map(g => g.name).join('\n')
         ).toBe(s`
-            Langium
+            Ifrit
         `);
     });
 });

@@ -3,7 +3,7 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import { createCardDslServices } from "../../src/language/card-dsl-module.js";
-import { Model, isModel } from "../../src/language/generated/ast.js";
+import { BinExpr, ElementCategoryConstant, Model, MonsterCard, SelectStep, isEffectStep, isElementCategoryConstant, isSelectStep } from "../../src/language/generated/ast.js";
 
 let services: ReturnType<typeof createCardDslServices>;
 let parse:    ReturnType<typeof parseHelper<Model>>;
@@ -21,40 +21,64 @@ describe('Parsing tests', () => {
 
     test('parse simple model', async () => {
         document = await parse(`
-            person Langium
-            Hello Langium!
+name: "Ifrit" 
+id: 1
+type: monster
+category: fire
+artwork: "https://manacards.s3.fr-par.scw.cloud/cards/ifrit.webp"
+traits: spellcaster
+attack: 3000
+hp: 1000
+stars: 10
+description: "Lord of fire and destruction"
+abilities:
+    [active] "Annihilation":
+        description: "Destroy all monsters on the field except for Ifrit"
+        auto select $allCards from the battlefield where($allCards.category = fire)
+        [effect] destroy $allCards
+
         `);
 
-        // check for absensce of parser errors the classic way:
-        //  deacivated, find a much more human readable way below!
-        // expect(document.parseResult.parserErrors).toHaveLength(0);
+        // Check overall status
+        expect(document.parseResult.parserErrors).toHaveLength(0);
+
+        // make sure we have 1 card
+        expect(document.parseResult.value?.cards.length).toBe(1);
+
+        // get the first card
+        const card = document.parseResult.value?.cards[0];
+
 
         expect(
-            // here we use a (tagged) template expression to create a human readable representation
-            //  of the AST part we are interested in and that is to be compared to our expectation;
-            // prior to the tagged template expression we check for validity of the parsed document object
-            //  by means of the reusable function 'checkDocumentValid()' to sort out (critical) typos first;
-            checkDocumentValid(document) || s`
-                Persons:
-                  ${document.parseResult.value?.persons?.map(p => p.name)?.join('\n  ')}
-                Greetings to:
-                  ${document.parseResult.value?.greetings?.map(g => g.person.$refText)?.join('\n  ')}
-            `
-        ).toBe(s`
-            Persons:
-              Langium
-            Greetings to:
-              Langium
-        `);
+            card.name
+        ).toBe(s`Ifrit`);
+        
+
+        const cardType = card?.type;
+        expect(cardType).toBe('monster');
+
+        const monsterCard = card as MonsterCard;
+
+        // make sure we have 1 ability
+        expect(monsterCard.abilities.length).toBe(1);
+        expect(monsterCard.abilities[0].name).toBe('Annihilation');
+
+        // make sure we have 2 step in the ability, 1 select and 1 effect
+        expect(monsterCard.abilities[0].steps.length).toBe(2);
+
+
+        expect(isSelectStep(monsterCard.abilities[0].steps[0])).toBe(true);
+        expect(isEffectStep(monsterCard.abilities[0].steps[1])).toBe(true);
+
+        const selectStep = monsterCard.abilities[0].steps[0] as SelectStep;
+        //expect(isBinExpr(selectStep.condition)).toBe(true);
+        
+        const binExpr = selectStep.condition as BinExpr;
+
+        const rhs = binExpr.right;
+        expect(isElementCategoryConstant(rhs)).toBe(true);
+
+        const categoryConstant = rhs as ElementCategoryConstant;
+        expect(categoryConstant.value).toBe('fire');
     });
 });
-
-function checkDocumentValid(document: LangiumDocument): string | undefined {
-    return document.parseResult.parserErrors.length && s`
-        Parser errors:
-          ${document.parseResult.parserErrors.map(e => e.message).join('\n  ')}
-    `
-        || document.parseResult.value === undefined && `ParseResult is 'undefined'.`
-        || !isModel(document.parseResult.value) && `Root AST object is a ${document.parseResult.value.$type}, expected a '${Model}'.`
-        || undefined;
-}
