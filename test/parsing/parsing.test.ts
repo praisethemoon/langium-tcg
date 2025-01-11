@@ -3,7 +3,7 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import { createCardDslServices } from "../../src/language/card-dsl-module.js";
-import { BinExpr, ElementCategoryConstant, ElementCategoryConstantExpr, Model, MonsterCard, SelectStep, isEffectStep, isElementCategoryConstant, isElementCategoryConstantExpr, isSelectStep } from "../../src/language/generated/ast.js";
+import { BinExpr, ElementCategoryConstant, Model, MonsterCard, SelectStep, isEffectStep, isElementCategoryConstant, isSelectStep } from "../../src/language/generated/ast.js";
 
 let services: ReturnType<typeof createCardDslServices>;
 let parse:    ReturnType<typeof parseHelper<Model>>;
