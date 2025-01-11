@@ -158,16 +158,31 @@ MultExpr infers Expr:
     PrimExpr ({infer BinExpr.left=current} op=('*'|'/') right=PrimExpr)*;
 
 PrimExpr infers Expr:
-    INT ({infer IntConstant.value=current}) | 
-    ElementCategory ({infer ElementCategoryConstant.value=current}) |
-    CardType ({infer CardTypeConstant.value=current}) |
-    MonsterTrait ({infer MonsterTraitConstant.value=current}) |
-    Variable ({infer Variable.value=current}) | 
+    IntConstantExpr ({infer IntConstant.value=current}) | 
+    ElementCategoryConstantExpr ({infer ElementCategoryConstant.value=current}) |
+    CardTypeConstantExpr ({infer CardTypeConstant.value=current}) |
+    MonsterTraitConstantExpr ({infer MonsterTraitConstant.value=current}) |
+    VariableExpr ({infer VariableExpression.value=current}) | 
     "this" ({infer ThisConstant.value=current}) |
     '(' Expr ')';
 
 // Conditions for where clauses
 Condition: Expr;
+
+IntConstantExpr:
+    rawValue=INT;
+
+ElementCategoryConstantExpr:
+    rawValue=ElementCategory;
+
+CardTypeConstantExpr:
+    rawValue=CardType;
+
+MonsterTraitConstantExpr:
+    rawValue=MonsterTrait;
+
+VariableExpr:
+    rawValue=Variable;
 
 SelectSource returns string:
     // Battlefield
