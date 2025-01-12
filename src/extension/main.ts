@@ -2,11 +2,19 @@ import type { LanguageClientOptions, ServerOptions} from 'vscode-languageclient/
 import type * as vscode from 'vscode';
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
+import { commands } from 'vscode';
+import { CardPreviewPanel } from './CardPreviewPanel.js';
 
 let client: LanguageClient;
 
 // This function is called when the extension is activated.
 export function activate(context: vscode.ExtensionContext): void {
+    const showCardPreviewCommand = commands.registerCommand("cardDSLPreview.start", () => {
+      CardPreviewPanel.render(context.extensionUri);
+    });
+  
+    // Add command to the extension context
+    context.subscriptions.push(showCardPreviewCommand);
     client = startLanguageClient(context);
 }
 

@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Monogram Extended';
+    src: url('./assets/fonts/monogram-extended.ttf') format('truetype');
+    line-height: 1;
+}
+
+.retro {
+    font-family: 'Monogram Extended', monospace;
+    line-height: 0.7;
+}
