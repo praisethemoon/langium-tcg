@@ -5,7 +5,7 @@ This is a Langium DSL for describing cards for a TCG.
 The language is designed to be easy to use and understand, allowing for non programmers to easily add cards to the game.
 The goal is to model not only a Card's characteristics, but also its abilities and effects.
 
-<img src="./assets/ifrit-demo.png" width="300">
+<img src="./assets/vscode-demo.png">
 
 The source of this card can be found in `/samples/000.card`
 
