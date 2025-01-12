@@ -1,6 +1,7 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from "vscode";
 import { getUri } from "./utilities/getUri.js";
 import { getNonce } from "./utilities/getNonce.js"
+import { Messenger } from "vscode-messenger";
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -42,9 +43,9 @@ export class CardPreviewPanel {
      * will be created and displayed.
      *
      * @param extensionUri The URI of the directory containing the extension.
+     * @param messenger The messenger instance 
      */
-    public static render(extensionUri: Uri) {
-        console.log(extensionUri)
+    public static render(extensionUri: Uri, messenger: Messenger) {
         if (CardPreviewPanel.currentPanel) {
             // If the webview panel already exists reveal it
             CardPreviewPanel.currentPanel._panel.reveal(ViewColumn.One);
@@ -71,6 +72,7 @@ export class CardPreviewPanel {
             );
 
             CardPreviewPanel.currentPanel = new CardPreviewPanel(panel, extensionUri);
+            messenger.registerWebviewPanel(CardPreviewPanel.currentPanel._panel);
         }
     }
 

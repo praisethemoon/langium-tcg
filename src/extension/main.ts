@@ -1,22 +1,44 @@
 import type { LanguageClientOptions, ServerOptions} from 'vscode-languageclient/node.js';
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import * as path from 'node:path';
 import { LanguageClient, TransportKind } from 'vscode-languageclient/node.js';
 import { commands } from 'vscode';
 import { CardPreviewPanel } from './CardPreviewPanel.js';
+import { Messenger } from 'vscode-messenger';
 
 let client: LanguageClient;
+const messenger = new Messenger();
+
 
 // This function is called when the extension is activated.
-export function activate(context: vscode.ExtensionContext): void {
+export function activate(context: vscode.ExtensionContext) {
     const showCardPreviewCommand = commands.registerCommand("cardDSLPreview.start", () => {
-      CardPreviewPanel.render(context.extensionUri);
+        CardPreviewPanel.render(context.extensionUri, messenger);
     });
-  
     // Add command to the extension context
     context.subscriptions.push(showCardPreviewCommand);
+
+
     client = startLanguageClient(context);
+
+    // capture notifications from the language server
+    client.onNotification("browser/DocumentChange", (params) => {
+        console.log("document validated:",params);
+
+        const uri = params.uri;
+
+        // check if the URI is the active document, if so, send the notification to the webview
+        if (uri === vscode.window.activeTextEditor?.document.uri?.toString()) {
+            messenger.sendNotification({ method: 'updateCard' }, {type: 'webview', webviewType: 'showCardPreview' }, {
+                content: params.content
+            });
+        }
+    });
+    
+
+    return messenger.diagnosticApi();
 }
+
 
 // This function is called when the extension is deactivated.
 export function deactivate(): Thenable<void> | undefined {
