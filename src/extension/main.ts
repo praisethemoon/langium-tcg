@@ -23,8 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     // capture notifications from the language server
     client.onNotification("browser/DocumentChange", (params) => {
-        console.log("document validated:",params);
-
         const uri = params.uri;
 
         // check if the URI is the active document, if so, send the notification to the webview
