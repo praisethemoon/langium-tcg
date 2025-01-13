@@ -82,8 +82,3 @@ There is no game prototype yet, but you can export `.card` to `.json` using lang
 ```
 node bin/cli.js samples/000.card -d ./samples/samples_serialized/
 ```
-
-
-## TODO:
-- Add tests `/tests/*`
-- Game prototype
