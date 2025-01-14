@@ -1,6 +1,6 @@
 import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
+import monarchSyntax from "../../../src/syntaxes/card-dsl.monarch.js";
 import { configureWorker, defineUserServices } from './setupCommon.js';
-import monarchSyntax from "./syntaxes/card-dsl.monarch.js";
 
 export const setupConfigClassic = (): UserConfig => {
     return {
