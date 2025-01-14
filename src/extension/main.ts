@@ -8,7 +8,7 @@ import { Messenger } from 'vscode-messenger';
 
 let client: LanguageClient;
 const messenger = new Messenger();
-
+const documentCache = new Map<string, string>();
 
 // This function is called when the extension is activated.
 export function activate(context: vscode.ExtensionContext) {
@@ -31,8 +31,20 @@ export function activate(context: vscode.ExtensionContext) {
                 content: params.content
             });
         }
+        else {
+            // store in our map for later use
+            documentCache.set(uri, params.content);
+        }
     });
     
+    vscode.window.onDidChangeActiveTextEditor((event) => {
+        if (event?.document.uri?.toString() && documentCache.has(event?.document.uri?.toString())) {
+            messenger.sendNotification({ method: 'updateCard' }, {type: 'webview', webviewType: 'showCardPreview' }, {
+                content: documentCache.get(event?.document.uri.toString())
+            });
+        }
+    });
+
 
     return messenger.diagnosticApi();
 }
@@ -41,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
 // This function is called when the extension is deactivated.
 export function deactivate(): Thenable<void> | undefined {
     if (client) {
+        documentCache.clear();
         return client.stop();
     }
     return undefined;
