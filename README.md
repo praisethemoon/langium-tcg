@@ -12,8 +12,8 @@ The source of this card can be found in `/samples/000.card`
 # Project Structure:
 
 - `/src` Langium DSL source & generated files
-- `/webview` React Webview for the Extension.
-- `/webapp` Standalone webapp, uses `MonacoEditorReactComp`
+- `/card-webview` React Webview for the `Display Card` Extension, which renders the card as you edit.
+- `/webapp` Standalone webapp, uses `MonacoEditorReactComp` and does the same as the extension
 
 # Building:
 First compile the DSL core files: `npm run build`
