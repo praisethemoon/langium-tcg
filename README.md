@@ -5,11 +5,24 @@ This is a Langium DSL for describing cards for a TCG.
 The language is designed to be easy to use and understand, allowing for non programmers to easily add cards to the game.
 The goal is to model not only a Card's characteristics, but also its abilities and effects.
 
-<img src="./assets/ifrit-demo.png" width="300">
+<img src="./assets/vscode-demo.png">
 
 The source of this card can be found in `/samples/000.card`
 
+# Project Structure:
 
+- `/src` Langium DSL source & generated files
+- `/webview` React Webview for the Extension.
+- `/webapp` Standalone webapp, uses `MonacoEditorReactComp`
+
+# Building:
+First compile the DSL core files: `npm run build`
+Depending if you want to build the extension or the webapp:
+1. Extension: `npm run build:webview`
+2. WebApp: `npm run build:web` and `npm run bundle`
+
+
+# About the DSL:
 Card abilities are modeled as `selection` and `effect` steps.
 
 1. A Selection step is a step which prompts to player to select a target within the game, where to target must satisfy a set of conditions.
@@ -82,8 +95,3 @@ There is no game prototype yet, but you can export `.card` to `.json` using lang
 ```
 node bin/cli.js samples/000.card -d ./samples/samples_serialized/
 ```
-
-
-## TODO:
-- Add tests `/tests/*`
-- Game prototype

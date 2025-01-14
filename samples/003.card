@@ -9,3 +9,9 @@ attack: 1000
 hp: 600
 stars: 3
 description: "Definitely not a chicken."
+abilities:
+    [active] "Chickens Must Die!":
+        description: "Destroy all chickens on the field"
+        auto select $allCards from the battlefield where ($allCards.category = wind) and ($allCards.id != 3)
+        [effect] destroy $allCards
+    

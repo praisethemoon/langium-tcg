@@ -9,3 +9,4 @@ syntaxes/
 .DS_Store
 samples/samples_serialized/
 dist/
+build/

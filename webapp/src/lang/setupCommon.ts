@@ -26,7 +26,7 @@ export const configureMonacoWorkers = () => {
 
 export const configureWorker = (): LanguageClientConfig => {
     // vite does not extract the worker properly if it is URL is a variable
-    const lsWorker = new Worker(new URL('./language/main-browser', import.meta.url), {
+    const lsWorker = new Worker(new URL('./main-browser', import.meta.url), {
         type: 'module',
         name: 'CardDsl Language Server'
     });
