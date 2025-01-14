@@ -9,7 +9,20 @@ The goal is to model not only a Card's characteristics, but also its abilities a
 
 The source of this card can be found in `/samples/000.card`
 
+# Project Structure:
 
+- `/src` Langium DSL source & generated files
+- `/webview` React Webview for the Extension.
+- `/webapp` Standalone webapp, uses `MonacoEditorReactComp`
+
+# Building:
+First compile the DSL core files: `npm run build`
+Depending if you want to build the extension or the webapp:
+1. Extension: `npm run build:webview`
+2. WebApp: `npm run build:web` and `npm run bundle`
+
+
+# About the DSL:
 Card abilities are modeled as `selection` and `effect` steps.
 
 1. A Selection step is a step which prompts to player to select a target within the game, where to target must satisfy a set of conditions.
