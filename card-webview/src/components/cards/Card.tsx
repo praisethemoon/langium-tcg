@@ -1,20 +1,7 @@
-import { BaseCard, MonsterCard, SpellCard, TrapCard } from "../../../../src/language/generated/ast";
+import { BaseCard, isMonsterCard, isSpellCard, isTrapCard } from "../../../../src/language/generated/ast";
 import { MonsterCardComponent } from "./MonsterCard";
 import { SpellCardComponent } from "./SpellCard";
 import { TrapCardComponent } from "./TrapCard";
-
-
-export const isMonsterCard = (card: BaseCard): card is MonsterCard => {
-    return card.$type === "MonsterCard";
-};
-
-export const isSpellCard = (card: BaseCard): card is SpellCard => {
-    return card.$type === "SpellCard";
-};
-
-export const isTrapCard = (card: BaseCard): card is TrapCard => {
-    return card.$type === "TrapCard";
-}; 
 
 type CardProps = {
     card: BaseCard;
