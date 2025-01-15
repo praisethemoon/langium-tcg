@@ -1,5 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
-import type { BaseCard, CardDslAstType, MonsterCard, SpellCard, TrapCard } from './generated/ast.js';
+import { isExpr, type BaseCard, type CardDslAstType, type Effect, type MonsterCard, type SpellCard, type TrapCard } from './generated/ast.js';
 import type { CardDslServices } from './card-dsl-module.js';
 import { checkExpression } from './utils/typecheck-utils.js';
 
@@ -27,6 +27,9 @@ export function registerValidationChecks(services: CardDslServices) {
         ],
         BaseCard: [
             validator.checkBaseCardLimit
+        ],
+        Effect: [
+            validator.checkEffectType
         ]
     };
     registry.register(checks, validator);
@@ -129,6 +132,21 @@ export class CardDslValidator {
             }
         }
     }
+
+    checkEffectType(effect: Effect, accept: ValidationAcceptor): void {
+        if(effect.action === 'increase' || effect.action === 'decrease' || effect.action === 'gain' || effect.action === 'loose') {
+            if(isExpr(effect.amount)) {
+                const effectType = checkExpression(effect.amount, accept);
+                if(effectType != 'number') {
+                    accept('error', 'Effect amount must be a number.', { node: effect, property: 'amount' });
+                }
+            }
+            if (typeof effect.amount === 'undefined') {
+                accept('error', 'Effect amount must be a number.', { node: effect, property: 'amount' });
+            }
+        }
+    }
+
 
 
 }
