@@ -12,11 +12,11 @@ export default defineConfig({
   },
   server: {
     fs: {
-      // Add external directories while ensuring 'node_modules' is not restricted
+      // Must allow parent dir to be accessible, since we depend on card-webview
       allow: [
-        path.resolve(__dirname, '../'), // Your external directory
-        path.resolve(__dirname, './src'),    // Project's src
-        path.resolve(__dirname, './node_modules'), // Ensure node_modules is accessible
+        path.resolve(__dirname, '../'),
+        path.resolve(__dirname, './src'),
+        path.resolve(__dirname, './node_modules'),
       ],
     },
   },
